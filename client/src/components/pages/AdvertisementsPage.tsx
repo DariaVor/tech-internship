@@ -16,14 +16,12 @@ export default function AdvertisementsPage(): JSX.Element {
   }, [allAdvertisements]);
 
   return (
-    <Box>
-      <Box display="grid">
-        {advertisements?.map((advertisement) => (
-          <Box key={advertisement.id}>
-            <AdvertisementCard advertisement={advertisement} />
-          </Box>
-        ))}
-      </Box>
+    <Box display="flex" flexWrap="wrap" justifyContent="center" mt={2}>
+      {advertisements?.map((advertisement) => (
+        <Box m={3} key={advertisement.id}>
+          <AdvertisementCard advertisement={advertisement} />
+        </Box>
+      ))}
     </Box>
   );
 }

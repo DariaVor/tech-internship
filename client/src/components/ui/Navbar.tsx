@@ -3,7 +3,7 @@ import { Link as NavLink } from 'react-router-dom';
 import React from 'react';
 
 export default function Navbar(): JSX.Element {
-  const links = [{ to: '/advertisements', name: 'Advertisements' }];
+  const links = [{ to: '/advertisements', name: 'Объявления' }];
 
   return (
     <Box sx={{ flexGrow: 1, typography: 'body1' }}>
