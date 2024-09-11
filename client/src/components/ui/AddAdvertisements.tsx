@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+// AddAdvertisements.tsx
+import React, { useState, useEffect } from 'react';
 import { Box, Button, InputAdornment, TextField } from '@mui/material';
 import Modal from 'react-modal';
-import type { AdvertisementFormType } from '../../types/advertisementTypes';
-import { useAddAdvertisementMutation } from '../../features/api/accountApi';
+import type { AdvertisementFormType, AdvertisementType } from '../../types/advertisementTypes';
+import {
+  useAddAdvertisementMutation,
+  useUpdateAdvertisementMutation,
+} from '../../features/api/accountApi';
 
 Modal.setAppElement('#root');
 
@@ -23,8 +27,16 @@ const customStyles = {
   },
 };
 
-export default function AddAdvertisements(): JSX.Element {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+type AddAdvertisementsProps = {
+  advertisement?: AdvertisementType | null;
+  onClose: () => void;
+};
+
+export default function AddAdvertisements({
+  advertisement,
+  onClose,
+}: AddAdvertisementsProps): JSX.Element {
+  const [modalIsOpen, setModalIsOpen] = useState(true);
   const [input, setInput] = useState<AdvertisementFormType>({
     name: '',
     description: '',
@@ -33,6 +45,25 @@ export default function AddAdvertisements(): JSX.Element {
   });
 
   const [addAdvertisement] = useAddAdvertisementMutation();
+  const [updateAdvertisement] = useUpdateAdvertisementMutation();
+
+  useEffect(() => {
+    if (advertisement) {
+      setInput({
+        name: advertisement.name,
+        description: advertisement.description,
+        imageUrl: advertisement.imageUrl,
+        price: advertisement.price,
+      });
+    } else {
+      setInput({
+        name: '',
+        description: '',
+        imageUrl: '',
+        price: 0,
+      });
+    }
+  }, [advertisement]);
 
   const resetFields = (): void => {
     setInput({
@@ -47,34 +78,47 @@ export default function AddAdvertisements(): JSX.Element {
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const openModal = (): void => {
-    setModalIsOpen(true);
-  };
-
   const closeModal = (): void => {
     resetFields();
+    onClose();
     setModalIsOpen(false);
   };
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
-    const advertisement = {
-      ...input,
-      createdAt: new Date().toISOString(),
-      views: 0,
-      likes: 0,
-    };
+    if (advertisement) {
+      const updatedAdvertisement = {
+        ...advertisement,
+        ...input,
+      };
 
-    addAdvertisement(advertisement)
-      .unwrap()
-      .then(() => {
-        resetFields();
-        closeModal();
-      })
-      .catch((error) => {
-        console.error('Ошибка при добавлении объявления: ', error);
-      });
+      updateAdvertisement(updatedAdvertisement)
+        .unwrap()
+        .then(() => {
+          closeModal();
+        })
+        .catch((error) => {
+          console.error('Ошибка при редактировании объявления: ', error);
+        });
+    } else {
+      const newAdvertisement = {
+        ...input,
+        createdAt: new Date().toISOString(),
+        views: 0,
+        likes: 0,
+      };
+
+      addAdvertisement(newAdvertisement)
+        .unwrap()
+        .then(() => {
+          resetFields();
+          closeModal();
+        })
+        .catch((error) => {
+          console.error('Ошибка при добавлении объявления: ', error);
+        });
+    }
   };
 
   const modalContent = (
@@ -87,7 +131,6 @@ export default function AddAdvertisements(): JSX.Element {
           onChange={changeHandler}
           fullWidth
           required
-          slotProps={{ htmlInput: { title: 'Название обязательно' } }}
         />
       </Box>
       <Box sx={{ mb: 2 }}>
@@ -131,7 +174,7 @@ export default function AddAdvertisements(): JSX.Element {
       </Box>
       <Box sx={{ mb: 2 }}>
         <Button type="submit" variant="contained" color="success">
-          Добавить
+          {advertisement ? 'Сохранить изменения' : 'Добавить'}
         </Button>
         <Button variant="contained" onClick={closeModal} sx={{ ml: 2 }}>
           Закрыть
@@ -141,13 +184,8 @@ export default function AddAdvertisements(): JSX.Element {
   );
 
   return (
-    <div>
-      <Button variant="contained" color="primary" onClick={openModal}>
-        Разместить объявление
-      </Button>
-      <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
-        {modalContent}
-      </Modal>
-    </div>
+    <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
+      {modalContent}
+    </Modal>
   );
 }

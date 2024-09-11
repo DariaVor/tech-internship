@@ -1,4 +1,4 @@
-import React from 'react';
+// AdvertisementCard.tsx
 import {
   Card,
   CardActionArea,
@@ -8,6 +8,7 @@ import {
   Box,
   useMediaQuery,
 } from '@mui/material';
+import React from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import type { AdvertisementType } from '../../types/advertisementTypes';
@@ -21,11 +22,14 @@ function formatPrice(price: number | undefined): string {
 
 type AdvertisementCardProps = {
   advertisement: AdvertisementType;
+  onCardClick: (id: string) => void;
 };
 
-export default function AdvertisementCard({ advertisement }: AdvertisementCardProps): JSX.Element {
+export default function AdvertisementCard({
+  advertisement,
+  onCardClick,
+}: AdvertisementCardProps): JSX.Element {
   const imageUrl = advertisement.imageUrl || '/logo.svg';
-
   const isMobile = useMediaQuery('(max-width:345px)');
 
   return (
@@ -37,12 +41,12 @@ export default function AdvertisementCard({ advertisement }: AdvertisementCardPr
         flexDirection: 'column',
       }}
     >
-      <CardActionArea sx={{ flexGrow: 1 }}>
+      <CardActionArea onClick={() => onCardClick(advertisement.id)} sx={{ flexGrow: 1 }}>
         <CardMedia
           component="img"
           height="300"
           image={imageUrl}
-          alt="Объявление"
+          alt={advertisement.name}
           sx={{ objectFit: 'cover' }}
         />
         <CardContent

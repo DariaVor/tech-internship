@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { useGetAdvertisementsQuery } from '../../features/api/accountApi';
 import AdvertisementCard from '../ui/AdvertisementCard';
 import AddAdvertisements from '../ui/AddAdvertisements';
@@ -7,8 +8,10 @@ import SearchBar from '../ui/SearchBar';
 import SortControl from '../ui/SortControl';
 import PaginationControl from '../ui/PaginationControl';
 import ItemsPerPageControl from '../ui/ItemsPerPageControl';
+import Loader from '../ui/Loader';
+import type { AdvertisementType } from '../../types/advertisementTypes';
 
-const ITEMS_PER_PAGE_OPTIONS = [5, 10, 20];
+const ITEMS_PER_PAGE_OPTIONS = [10, 20, 50];
 const SORT_OPTIONS = [
   { value: '', label: 'Без сортировки' },
   { value: 'priceAsc', label: 'Цена: по возрастанию' },
@@ -20,12 +23,16 @@ const SORT_OPTIONS = [
 ];
 
 export default function AdvertisementsPage(): JSX.Element {
-  const { data: advertisements = [] } = useGetAdvertisementsQuery();
+  const { data: advertisements = [], isLoading } = useGetAdvertisementsQuery();
   const [filteredAds, setFilteredAds] = useState(advertisements);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editAd, setEditAd] = useState<AdvertisementType | null>(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     let ads = [...advertisements];
@@ -62,12 +69,36 @@ export default function AdvertisementsPage(): JSX.Element {
     setFilteredAds(ads.slice(startIndex, endIndex));
   }, [advertisements, searchTerm, sortOption, itemsPerPage, currentPage]);
 
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (!advertisements || advertisements.length === 0) {
+    return <div>Объявления не найдены</div>;
+  }
+
   const totalPages = Math.ceil(advertisements.length / itemsPerPage);
+
+  const handleCardClick = (id: string): void => {
+    navigate(`/advertisement/${id}`);
+  };
+
+  const openAddModal = (): void => {
+    setEditAd(null);
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = (): void => {
+    setIsModalOpen(false);
+    setEditAd(null);
+  };
 
   return (
     <>
       <Box display="flex" flexWrap="wrap" justifyContent="center" mt={3}>
-        <AddAdvertisements />
+        <Button variant="contained" color="primary" onClick={openAddModal}>
+          Разместить объявление
+        </Button>
       </Box>
 
       <Box display="flex" flexWrap="wrap" justifyContent="center" mt={3}>
@@ -93,7 +124,7 @@ export default function AdvertisementsPage(): JSX.Element {
       <Box display="flex" flexWrap="wrap" justifyContent="space-evenly" mt={2}>
         {filteredAds?.map((advertisement) => (
           <Box m={3} key={advertisement.id}>
-            <AdvertisementCard advertisement={advertisement} />
+            <AdvertisementCard advertisement={advertisement} onCardClick={handleCardClick} />
           </Box>
         ))}
       </Box>
@@ -104,6 +135,8 @@ export default function AdvertisementsPage(): JSX.Element {
         handlePreviousPage={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
         handleNextPage={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
       />
+
+      {isModalOpen && <AddAdvertisements advertisement={editAd} onClose={handleModalClose} />}
     </>
   );
 }
