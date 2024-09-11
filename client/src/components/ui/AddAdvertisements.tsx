@@ -6,6 +6,23 @@ import { useAddAdvertisementMutation } from '../../features/api/accountApi';
 
 Modal.setAppElement('#root');
 
+const customStyles = {
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 6,
+  },
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    transform: 'translate(-50%, -50%)',
+    width: '80%',
+    maxWidth: '600px',
+    padding: '20px',
+  },
+};
+
 export default function AddAdvertisements(): JSX.Element {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [input, setInput] = useState<AdvertisementFormType>({
@@ -128,7 +145,7 @@ export default function AddAdvertisements(): JSX.Element {
       <Button variant="contained" color="primary" onClick={openModal}>
         Разместить объявление
       </Button>
-      <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
+      <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
         {modalContent}
       </Modal>
     </div>
