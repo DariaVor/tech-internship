@@ -4,6 +4,7 @@ import Layout from './components/Layout';
 import AdvertisementsPage from './components/pages/AdvertisementsPage';
 import './App.css';
 import AdvertisementDetailPage from './components/pages/AdvertisementDetailPage';
+import OrdersPage from './components/pages/OrdersPage';
 
 function App(): JSX.Element {
   const router = createBrowserRouter([
@@ -20,8 +21,12 @@ function App(): JSX.Element {
           element: <AdvertisementsPage />,
         },
         {
-          path: '/advertisement/:id',
+          path: '/advertisements/:id',
           element: <AdvertisementDetailPage />,
+        },
+        {
+          path: '/orders',
+          element: <OrdersPage />,
         },
       ],
     },

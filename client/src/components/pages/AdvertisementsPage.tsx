@@ -80,7 +80,7 @@ export default function AdvertisementsPage(): JSX.Element {
   const totalPages = Math.ceil(advertisements.length / itemsPerPage);
 
   const handleCardClick = (id: string): void => {
-    navigate(`/advertisement/${id}`);
+    navigate(`/advertisements/${id}`);
   };
 
   const openAddModal = (): void => {

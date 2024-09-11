@@ -8,17 +8,17 @@
       "createdAt": "2022-08-12T20:16:55.351Z",
       "views": 20,
       "likes": 2,
-      "imageUrl": "https://picsum.photos/200/300"
+      "imageUrl": "https://www.stolberi.ru/upload/iblock/f25/9f19255d_289b_11ea_8086_fcaa145d5838_ffce8608_ed05_11ea_f38b_005056bdce03.jpg"
     },
     {
       "id": "2",
       "name": "Ведро снега",
       "description": "Последняя возможность купить по выгодной цене!",
-      "price": 3000,
+      "price": 500,
       "createdAt": "2023-08-12T20:16:55.351Z",
       "views": 77832,
       "likes": 45666,
-      "imageUrl": "https://picsum.photos/200/300"
+      "imageUrl": "https://otvet.imgsmail.ru/download/13808068_fa6b134f3466159773929ab840cc65da_800.jpg"
     },
     {
       "id": "3",
@@ -27,7 +27,7 @@
       "createdAt": "2024-08-12T20:16:55.351Z",
       "views": 900,
       "likes": 19,
-      "imageUrl": "https://picsum.photos/200/300"
+      "imageUrl": "https://ae04.alicdn.com/kf/A82ca50c8796d4dc3801b909417c7cd78K.jpg_480x480.jpg"
     },
     {
       "id": "4",
@@ -37,7 +37,7 @@
       "createdAt": "2024-07-12T20:16:55.351Z",
       "views": 2000000,
       "likes": 2,
-      "imageUrl": "https://picsum.photos/200/300"
+      "imageUrl": "https://cr-office.ru/wa-data/public/shop/products/32/46/14632/images/15192/15192.750.jpg"
     },
     {
       "id": "5",
@@ -46,7 +46,7 @@
       "createdAt": "2024-06-12T20:16:55.351Z",
       "views": 0,
       "likes": 0,
-      "imageUrl": "https://picsum.photos/200/300"
+      "imageUrl": "https://www.modi.ru/upload/product/7aa/fwbfjgs4yudwekbtslm94z7bu8xngxl6.jpg"
     },
     {
       "id": "6",
@@ -56,7 +56,7 @@
       "createdAt": "2024-04-12T20:16:55.351Z",
       "views": 1,
       "likes": 0,
-      "imageUrl": "https://picsum.photos/200/300"
+      "imageUrl": "https://gofropack.com/wp-content/uploads/2018/02/korobka34.jpg"
     },
     {
       "id": "7",
@@ -66,7 +66,7 @@
       "createdAt": "2024-08-12T14:16:55.351Z",
       "views": 20000,
       "likes": 1,
-      "imageUrl": "https://picsum.photos/200/300"
+      "imageUrl": "https://sola-m.ru/wp-content/uploads/2022/10/uglovoj-divan-soft-9-1.jpg"
     },
     {
       "id": "8",
@@ -75,97 +75,7 @@
       "createdAt": "2024-08-12T12:16:55.351Z",
       "views": 200000,
       "likes": 302,
-      "imageUrl": "https://picsum.photos/200/300"
-    },
-    {
-      "id": "ee23",
-      "name": "test",
-      "description": "",
-      "imageUrl": "https://www.leuchtturm1917.com/media/productdetail/700x700/361573/notebook-medium-a5-hardcover-251-numbered-pages-powder-ruled.jpg",
-      "price": 0,
-      "createdAt": "2024-09-11T10:45:47.058Z",
-      "views": 0,
-      "likes": 0
-    },
-    {
-      "id": "a46d",
-      "name": "test22",
-      "description": "testtesttest",
-      "imageUrl": "https://www.leuchtturm1917.com/media/productdetail/700x700/361573/notebook-medium-a5-hardcover-251-numbered-pages-powder-ruled.jpg",
-      "price": "3",
-      "createdAt": "2024-09-11T15:28:08.514Z",
-      "views": 0,
-      "likes": 0
-    },
-    {
-      "id": "4934",
-      "name": "test",
-      "description": "",
-      "imageUrl": "",
-      "price": 0,
-      "createdAt": "2024-09-11T15:29:36.729Z",
-      "views": 0,
-      "likes": 0
-    },
-    {
-      "id": "5c88",
-      "name": "test",
-      "description": "",
-      "imageUrl": "",
-      "price": 0,
-      "createdAt": "2024-09-11T15:29:39.629Z",
-      "views": 0,
-      "likes": 0
-    },
-    {
-      "id": "b0b7",
-      "name": "test",
-      "description": "",
-      "imageUrl": "",
-      "price": 0,
-      "createdAt": "2024-09-11T15:29:42.212Z",
-      "views": 0,
-      "likes": 0
-    },
-    {
-      "id": "fa49",
-      "name": "test",
-      "description": "",
-      "imageUrl": "",
-      "price": "3000",
-      "createdAt": "2024-09-11T15:48:16.589Z",
-      "views": 0,
-      "likes": 0
-    },
-    {
-      "id": "5aa2",
-      "name": "test",
-      "description": "",
-      "imageUrl": "https://www.leuchtturm1917.com/media/productdetail/700x700/361573/notebook-medium-a5-hardcover-251-numbered-pages-powder-ruled.jpg",
-      "price": "1800",
-      "createdAt": "2024-09-11T15:53:00.319Z",
-      "views": 0,
-      "likes": 0
-    },
-    {
-      "id": "c572",
-      "name": "test3333",
-      "description": "",
-      "imageUrl": "",
-      "price": "6000",
-      "createdAt": "2024-09-11T15:58:32.286Z",
-      "views": 0,
-      "likes": 0
-    },
-    {
-      "id": "c768",
-      "name": "testhhh3333",
-      "description": "",
-      "imageUrl": "",
-      "price": "233333",
-      "createdAt": "2024-09-11T16:05:35.268Z",
-      "views": 0,
-      "likes": 0
+      "imageUrl": "https://s16.stc.all.kpcdn.net/expert/wp-content/uploads/2023/11/iph.jpg"
     }
   ],
   "orders": [
@@ -184,7 +94,7 @@
           "createdAt": "2024-08-12T12:16:55.351Z",
           "views": 200000,
           "likes": 302,
-          "imageUrl": "",
+          "imageUrl": "https://s16.stc.all.kpcdn.net/expert/wp-content/uploads/2023/11/iph.jpg",
           "count": 3
         },
         {
@@ -195,7 +105,7 @@
           "createdAt": "2024-04-12T20:16:55.351Z",
           "views": 1,
           "likes": 0,
-          "imageUrl": "",
+          "imageUrl": "https://gofropack.com/wp-content/uploads/2018/02/korobka34.jpg",
           "count": 2
         }
       ]
@@ -205,18 +115,18 @@
       "status": 4,
       "createdAt": "2024-08-12T20:20:55.351Z",
       "finishedAt": "2024-08-12T20:25:55.351Z",
-      "total": 33000,
+      "total": 35000,
       "deliveryWay": "sdek",
       "items": [
         {
           "id": "2",
           "name": "Ведро снега",
           "description": "Последняя возможность купить по выгодной цене!",
-          "price": 3000,
+          "price": 500,
           "createdAt": "2023-08-12T20:16:55.351Z",
           "views": 77832,
           "likes": 45666,
-          "imageUrl": "",
+          "imageUrl": "https://otvet.imgsmail.ru/download/13808068_fa6b134f3466159773929ab840cc65da_800.jpg",
           "count": 10
         },
         {
@@ -226,7 +136,7 @@
           "createdAt": "2024-06-12T20:16:55.351Z",
           "views": 0,
           "likes": 0,
-          "imageUrl": "",
+          "imageUrl": "https://www.modi.ru/upload/product/7aa/fwbfjgs4yudwekbtslm94z7bu8xngxl6.jpg",
           "count": 5
         }
       ]
