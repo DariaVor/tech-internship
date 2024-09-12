@@ -5,6 +5,7 @@ import AdvertisementsPage from './components/pages/AdvertisementsPage';
 import './App.css';
 import AdvertisementDetailPage from './components/pages/AdvertisementDetailPage';
 import OrdersPage from './components/pages/OrdersPage';
+import ErrorPage from './components/pages/ErrorPage';
 
 function App(): JSX.Element {
   const router = createBrowserRouter([
@@ -27,6 +28,10 @@ function App(): JSX.Element {
         {
           path: '/orders',
           element: <OrdersPage />,
+        },
+        {
+          path: '*',
+          element: <ErrorPage />,
         },
       ],
     },
