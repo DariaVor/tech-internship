@@ -16,7 +16,7 @@ export default function AdvertisementDetailPage(): JSX.Element {
   }
 
   if (!advertisement) {
-    return <Typography>Объявление не найдено</Typography>;
+    return <Typography >Объявление не найдено</Typography>;
   }
 
   const handleEditClick = (): void => {

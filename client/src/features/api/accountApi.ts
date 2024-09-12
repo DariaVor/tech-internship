@@ -31,7 +31,7 @@ export const accountApi = createApi({
       }),
       invalidatesTags: ['Advertisement'],
     }),
-    deleteAdvertisement: builder.mutation<{ success: boolean }, { id: number }>({
+    deleteAdvertisement: builder.mutation<{ success: boolean }, { id: string }>({
       query: (advertisement) => ({
         url: `/advertisements/${advertisement.id}`,
         method: 'DELETE',

@@ -1,4 +1,3 @@
-// AdvertisementCard.tsx
 import {
   Card,
   CardActionArea,
@@ -7,11 +6,15 @@ import {
   Typography,
   Box,
   useMediaQuery,
+  Button,
+  CardActions,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import type { AdvertisementType } from '../../types/advertisementTypes';
+import { useDeleteAdvertisementMutation } from '../../features/api/accountApi';
+import DeleteModal from './DeleteModal';
 
 function formatPrice(price: number | undefined): string {
   if (price === undefined) {
@@ -32,11 +35,33 @@ export default function AdvertisementCard({
   const imageUrl = advertisement.imageUrl || '/logo.svg';
   const isMobile = useMediaQuery('(max-width:345px)');
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [deleteAdvertisement] = useDeleteAdvertisementMutation();
+
+  const handleDeleteClick = (): void => {
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteConfirm = (): void => {
+    void (async () => {
+      try {
+        await deleteAdvertisement({ id: advertisement.id });
+        setIsModalOpen(false);
+      } catch (error) {
+        console.error('Failed to delete advertisement:', error);
+      }
+    })();
+  };
+
+  const handleModalClose = (): void => {
+    setIsModalOpen(false);
+  };
+
   return (
     <Card
       sx={{
         width: isMobile ? 200 : 300,
-        height: 450,
+        height: 500,
         display: 'flex',
         flexDirection: 'column',
       }}
@@ -87,6 +112,17 @@ export default function AdvertisementCard({
           </Typography>
         </CardContent>
       </CardActionArea>
+
+      <CardActions>
+        <Button variant="contained" color="error" onClick={handleDeleteClick}>
+          Удалить
+        </Button>
+        <DeleteModal
+          open={isModalOpen}
+          onClose={handleModalClose}
+          onConfirmDelete={handleDeleteConfirm}
+        />
+      </CardActions>
     </Card>
   );
 }
