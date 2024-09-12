@@ -141,9 +141,9 @@
   "orders": [
     {
       "id": "1",
-      "status": 0,
+      "status": 4,
       "createdAt": "2024-08-12T20:20:55.351Z",
-      "finishedAt": "",
+      "finishedAt": "2024-09-12T14:30:33.759Z",
       "total": 314000,
       "deliveryWay": "mail",
       "items": [
@@ -203,9 +203,8 @@
     },
     {
       "id": "3",
-      "status": 4,
+      "status": 0,
       "createdAt": "2024-08-12T20:20:55.351Z",
-      "finishedAt": "",
       "total": 314000,
       "deliveryWay": "mail",
       "items": [

@@ -5,17 +5,16 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
-import { useNavigate } from 'react-router-dom';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useGetOrdersQuery, useUpdateOrderMutation } from '../../features/api/accountApi';
 import Loader from '../ui/Loader';
+import OrderModal from '../ui/OrderModal';
 import type { OrderType } from '../../types/orderTypes';
 
 const OrderStatus = {
@@ -26,6 +25,7 @@ const OrderStatus = {
   Получен: 4,
   Заархивирован: 5,
   Возврат: 6,
+  Все: '',
 } as const;
 
 function formatPrice(price: number | undefined): string {
@@ -35,15 +35,17 @@ function formatPrice(price: number | undefined): string {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
+function formatDateTime(date: string | number | Date): string {
+  return new Date(date).toLocaleString('ru-RU');
+}
+
 export default function OrdersPage(): JSX.Element {
   const { data: orders, isLoading } = useGetOrdersQuery();
   const [updateOrder] = useUpdateOrderMutation();
   const [filterStatus, setFilterStatus] = useState<number | ''>('');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<OrderType | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-
-  const navigate = useNavigate();
 
   if (isLoading) {
     return <Loader />;
@@ -57,16 +59,20 @@ export default function OrdersPage(): JSX.Element {
     setFilterStatus(event.target.value as number);
   };
 
-  const handleSortChange = (event: SelectChangeEvent<'asc' | 'desc'>): void => {
-    setSortOrder(event.target.value as 'asc' | 'desc');
+  const handleSortChange = (event: SelectChangeEvent<'asc' | 'desc' | 'not-sorted'>): void => {
+    setSortOrder(
+      event.target.value === 'not-sorted' ? null : (event.target.value as 'asc' | 'desc'),
+    );
   };
 
   const filteredOrders =
     filterStatus === '' ? orders : orders.filter((order) => order.status === filterStatus);
 
-  const sortedOrders = [...filteredOrders].sort((a, b) =>
-    sortOrder === 'asc' ? a.total - b.total : b.total - a.total,
-  );
+  const sortedOrders = sortOrder
+    ? [...filteredOrders].sort((a, b) =>
+        sortOrder === 'asc' ? a.total - b.total : b.total - a.total,
+      )
+    : filteredOrders;
 
   const handleItemClick = (order: OrderType): void => {
     setSelectedOrder(order);
@@ -79,7 +85,11 @@ export default function OrdersPage(): JSX.Element {
 
   const handleUpdateOrderClick = async (order: OrderType): Promise<void> => {
     try {
-      await updateOrder({ ...order, status: OrderStatus.Получен }).unwrap();
+      await updateOrder({
+        ...order,
+        status: OrderStatus.Получен,
+        finishedAt: new Date().toISOString(),
+      }).unwrap();
     } catch (error) {
       console.error('Ошибка при обновлении статуса заказа:', error);
     }
@@ -87,10 +97,16 @@ export default function OrdersPage(): JSX.Element {
 
   return (
     <Box p={3}>
-      <Box mb={2}>
-        <FormControl fullWidth sx={{ mb: 2 }}>
+      <Box
+        mb={2}
+        display="flex"
+        flexDirection={{ xs: 'column', sm: 'row' }}
+        gap={2}
+        flexWrap="wrap"
+      >
+        <FormControl sx={{ flex: 1 }}>
           <InputLabel>Статус</InputLabel>
-          <Select value={filterStatus} onChange={handleFilterChange} label="Status">
+          <Select value={filterStatus} onChange={handleFilterChange} label="Статус">
             {Object.entries(OrderStatus).map(([key, value]) => (
               <MenuItem key={key} value={value}>
                 {key}
@@ -99,11 +115,22 @@ export default function OrdersPage(): JSX.Element {
           </Select>
         </FormControl>
 
-        <FormControl fullWidth>
-          <InputLabel>Сортировать заказы</InputLabel>
-          <Select value={sortOrder} onChange={handleSortChange} label="Sort Order">
-            <MenuItem value="asc">В порядке возрастания</MenuItem>
-            <MenuItem value="desc">В порядке убывания</MenuItem>
+        <FormControl sx={{ flex: 1 }}>
+          <InputLabel>Сортировать сумму</InputLabel>
+          <Select
+            value={sortOrder || 'not-sorted'}
+            onChange={handleSortChange}
+            label="Сортировать заказы"
+          >
+            <MenuItem value="not-sorted">Без сортировки</MenuItem>
+            <MenuItem value="asc">
+              <ArrowUpwardIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 1 }} />
+              По возрастанию
+            </MenuItem>
+            <MenuItem value="desc">
+              <ArrowDownwardIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 1 }} />
+              По убыванию
+            </MenuItem>
           </Select>
         </FormControl>
       </Box>
@@ -117,16 +144,13 @@ export default function OrdersPage(): JSX.Element {
                 Количество товаров: {order.items.reduce((sum, item) => sum + item.count, 0)}
               </Typography>
               <Typography>Сумма заказа: {formatPrice(order.total)} ₽</Typography>
-              <Typography>
-                Дата создания: {new Date(order.createdAt).toLocaleDateString('ru-RU')}
-              </Typography>
+              <Typography>Дата создания: {formatDateTime(order.createdAt)}</Typography>
               <Typography>Статус: {Object.keys(OrderStatus)[order.status]}</Typography>
               {order.finishedAt && (
-                <Typography>
-                  Дата завершения: {new Date(order.finishedAt).toLocaleDateString('ru-RU')}
-                </Typography>
+                <Typography>Дата завершения: {formatDateTime(order.finishedAt)}</Typography>
               )}
             </CardContent>
+
             <CardActions>
               <Button
                 variant="contained"
@@ -137,7 +161,23 @@ export default function OrdersPage(): JSX.Element {
                 Показать все товары
               </Button>
 
-              {order.status !== OrderStatus.Получен && (
+              {order.status === OrderStatus.Получен ? (
+                <Button
+                  disabled
+                  variant="outlined"
+                  onClick={() => {
+                    void (async () => {
+                      try {
+                        await handleUpdateOrderClick(order);
+                      } catch (error) {
+                        console.error('Ошибка при обновлении статуса заказа:', error);
+                      }
+                    })();
+                  }}
+                >
+                  Завершить заказ
+                </Button>
+              ) : (
                 <Button
                   variant="outlined"
                   onClick={() => {
@@ -159,28 +199,7 @@ export default function OrdersPage(): JSX.Element {
       </Box>
 
       {selectedOrder && (
-        <Dialog open={modalOpen} onClose={handleModalClose} maxWidth="md">
-          <DialogTitle>Товары заказа №{selectedOrder.id}</DialogTitle>
-          <DialogContent>
-            {selectedOrder.items.map((item) => (
-              <Box
-                key={item.id}
-                p={2}
-                onClick={() => navigate(`/advertisements/${item.id}`)}
-                sx={{ cursor: 'pointer' }}
-              >
-                <img
-                  src={item.imageUrl || '/logo.svg'}
-                  alt={item.name}
-                  style={{ width: '100px' }}
-                />
-                <Typography variant="body1">{item.name}</Typography>
-                <Typography>Цена: {formatPrice(item.price)} ₽</Typography>
-                <Typography>Количество: {item.count}</Typography>
-              </Box>
-            ))}
-          </DialogContent>
-        </Dialog>
+        <OrderModal order={selectedOrder} open={modalOpen} onClose={handleModalClose} />
       )}
     </Box>
   );

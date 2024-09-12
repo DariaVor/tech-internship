@@ -179,14 +179,16 @@ export default function AdvertisementForm({
           fullWidth
         />
       </Box>
-      <Box sx={{ mb: 2 }}>
+      <Box mb={2} display="flex" justifyContent='space-between'  flexDirection={{ xs: 'column', sm: 'row' }} gap={2}>
         <Button type="submit" variant="contained" color="success">
           {advertisement ? 'Сохранить изменения' : 'Добавить'}
         </Button>
-        <Button variant="outlined" onClick={closeModal} sx={{ ml: 2 }}>
+        <Button variant="outlined" onClick={closeModal}>
           Закрыть
         </Button>
       </Box>
+
+ 
     </form>
   );
 
