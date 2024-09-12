@@ -76,6 +76,26 @@
       "views": 200000,
       "likes": 302,
       "imageUrl": "https://s16.stc.all.kpcdn.net/expert/wp-content/uploads/2023/11/iph.jpg"
+    },
+    {
+      "id": "c300",
+      "name": "Ежедневник",
+      "description": "Красивый",
+      "imageUrl": "https://www.leuchtturm1917.com/media/productdetail/700x700/361573/notebook-medium-a5-hardcover-251-numbered-pages-powder-ruled.jpg",
+      "price": "700",
+      "createdAt": "2024-09-12T18:44:54.005Z",
+      "views": 0,
+      "likes": 0
+    },
+    {
+      "id": "ab57",
+      "name": "Басик",
+      "description": "",
+      "imageUrl": "https://t3.ftcdn.net/jpg/01/20/68/68/360_F_120686889_nDaqiMH8I5AmT5B0hpuJ14ZasdrrgRAK.jpg",
+      "price": 0,
+      "createdAt": "2024-09-12T18:46:39.689Z",
+      "views": 0,
+      "likes": 0
     }
   ],
   "orders": [
