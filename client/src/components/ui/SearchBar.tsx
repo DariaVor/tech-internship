@@ -1,7 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import { TextField, InputAdornment, IconButton } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
 import ClearIcon from '@mui/icons-material/Clear';
 import debounce from 'lodash.debounce';
+import SearchIcon from '@mui/icons-material/Search';
 
 type SearchBarProps = {
   handleSearchChange: (searchTerm: string) => void;
@@ -34,11 +37,11 @@ export default function SearchBar({ handleSearchChange }: SearchBarProps): JSX.E
 
   return (
     <TextField
-      label="Поиск по названию"
+      variant="outlined"
+      placeholder="Поиск объявлений"
       value={searchTerm}
       onChange={handleInputChange}
-      variant="outlined"
-      fullWidth
+      sx={{ minWidth: 300 }}
       slotProps={{
         input: {
           endAdornment: (
@@ -48,6 +51,11 @@ export default function SearchBar({ handleSearchChange }: SearchBarProps): JSX.E
                   <ClearIcon />
                 </IconButton>
               )}
+            </InputAdornment>
+          ),
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
             </InputAdornment>
           ),
         },

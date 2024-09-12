@@ -1,10 +1,12 @@
 import React from 'react';
-import type { SelectChangeEvent } from '@mui/material';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import InputAdornment from '@mui/material/InputAdornment';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
+import GridViewIcon from '@mui/icons-material/GridView';
 
 type ItemsPerPageControlProps = {
   itemsPerPage: number;
-  handleItemsPerPageChange: (e: SelectChangeEvent<number>) => void;
+  handleItemsPerPageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   options: number[];
 };
 
@@ -14,15 +16,27 @@ export default function ItemsPerPageControl({
   options,
 }: ItemsPerPageControlProps): JSX.Element {
   return (
-    <FormControl variant="outlined">
-      <InputLabel>На странице</InputLabel>
-      <Select value={itemsPerPage} onChange={handleItemsPerPageChange} label="На странице">
-        {options.map((option) => (
-          <MenuItem key={option} value={option}>
-            {option}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+    <TextField
+      select
+      label="Отображать"
+      value={itemsPerPage}
+      onChange={handleItemsPerPageChange}
+      slotProps={{
+        input: {
+          startAdornment: (
+            <InputAdornment position="start">
+              <GridViewIcon />
+            </InputAdornment>
+          ),
+        },
+      }}
+      sx={{ minWidth: 50 }}
+    >
+      {options.map((option) => (
+        <MenuItem key={option} value={option}>
+          {option}
+        </MenuItem>
+      ))}
+    </TextField>
   );
 }

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGetAdvertisementByIdQuery } from '../../features/api/accountApi';
 import Loader from '../ui/Loader';
-import AddAdvertisements from '../ui/AddAdvertisements';
+import AdvertisementForm from '../ui/AdvertisementForm';
 
 export default function AdvertisementDetailPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
@@ -16,7 +18,7 @@ export default function AdvertisementDetailPage(): JSX.Element {
   }
 
   if (!advertisement) {
-    return <Typography >Объявление не найдено</Typography>;
+    return <Typography>Объявление не найдено</Typography>;
   }
 
   const handleEditClick = (): void => {
@@ -53,7 +55,7 @@ export default function AdvertisementDetailPage(): JSX.Element {
       </Box>
 
       {isEditModalOpen && (
-        <AddAdvertisements advertisement={advertisement} onClose={handleModalClose} />
+        <AdvertisementForm advertisement={advertisement} onClose={handleModalClose} />
       )}
     </Box>
   );

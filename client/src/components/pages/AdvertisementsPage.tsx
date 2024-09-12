@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
+import Grid2 from '@mui/material/Grid2';
 import { useGetAdvertisementsQuery } from '../../features/api/accountApi';
 import AdvertisementCard from '../ui/AdvertisementCard';
-import AddAdvertisements from '../ui/AddAdvertisements';
-import SearchBar from '../ui/SearchBar';
-import SortControl from '../ui/SortControl';
+import AdvertisementForm from '../ui/AdvertisementForm';
+import Loader from '../ui/Loader';
 import PaginationControl from '../ui/PaginationControl';
 import ItemsPerPageControl from '../ui/ItemsPerPageControl';
-import Loader from '../ui/Loader';
 import type { AdvertisementType } from '../../types/advertisementTypes';
+import SearchBar from '../ui/SearchBar';
+import SortControl from '../ui/SortControl';
 
 const ITEMS_PER_PAGE_OPTIONS = [10, 20, 50];
 const SORT_OPTIONS = [
@@ -33,14 +35,14 @@ export default function AdvertisementsPage(): JSX.Element {
   const [editAd, setEditAd] = useState<AdvertisementType | null>(null);
 
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     let ads = [...advertisements];
-
+  
     if (searchTerm.length >= 3) {
       ads = ads.filter((ad) => ad.name.toLowerCase().includes(searchTerm.toLowerCase()));
     }
-
+  
     switch (sortOption) {
       case 'priceAsc':
         ads.sort((a, b) => a.price - b.price);
@@ -63,7 +65,7 @@ export default function AdvertisementsPage(): JSX.Element {
       default:
         break;
     }
-
+  
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     setFilteredAds(ads.slice(startIndex, endIndex));
@@ -95,39 +97,33 @@ export default function AdvertisementsPage(): JSX.Element {
 
   return (
     <>
-      <Box display="flex" flexWrap="wrap" justifyContent="center" mt={3}>
-        <Button variant="contained" color="primary" onClick={openAddModal}>
-          Разместить объявление
-        </Button>
-      </Box>
-
-      <Box display="flex" flexWrap="wrap" justifyContent="center" mt={3}>
+      <Box display="flex" justifyContent="center" flexWrap="wrap" gap={4} mb={4} mt={4}>
         <SearchBar handleSearchChange={setSearchTerm} />
-      </Box>
 
-      <Box display="flex" flexWrap="wrap" justifyContent="center" mt={3}>
         <SortControl
           sortOption={sortOption}
           handleSortChange={(e) => setSortOption(e.target.value)}
           options={SORT_OPTIONS}
         />
-      </Box>
 
-      <Box display="flex" flexWrap="wrap" justifyContent="center" mt={3}>
         <ItemsPerPageControl
           itemsPerPage={itemsPerPage}
           handleItemsPerPageChange={(e) => setItemsPerPage(Number(e.target.value))}
           options={ITEMS_PER_PAGE_OPTIONS}
         />
+
+        <Button variant="contained" color="primary" onClick={openAddModal}>
+          Разместить объявление
+        </Button>
       </Box>
 
-      <Box display="flex" flexWrap="wrap" justifyContent="space-evenly" mt={2}>
-        {filteredAds?.map((advertisement) => (
-          <Box m={3} key={advertisement.id}>
+      <Grid2 container spacing={4} justifyContent="center" sx={{ padding: '0 16px' }}>
+        {filteredAds.map((advertisement) => (
+          <Grid2 key={advertisement.id}>
             <AdvertisementCard advertisement={advertisement} onCardClick={handleCardClick} />
-          </Box>
+          </Grid2>
         ))}
-      </Box>
+      </Grid2>
 
       <PaginationControl
         currentPage={currentPage}
@@ -136,7 +132,7 @@ export default function AdvertisementsPage(): JSX.Element {
         handleNextPage={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
       />
 
-      {isModalOpen && <AddAdvertisements advertisement={editAd} onClose={handleModalClose} />}
+      {isModalOpen && <AdvertisementForm advertisement={editAd} onClose={handleModalClose} />}
     </>
   );
 }

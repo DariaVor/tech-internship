@@ -1,6 +1,8 @@
-// AddAdvertisements.tsx
 import React, { useState, useEffect } from 'react';
-import { Box, Button, InputAdornment, TextField } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
 import Modal from 'react-modal';
 import type { AdvertisementFormType, AdvertisementType } from '../../types/advertisementTypes';
 import {
@@ -27,15 +29,15 @@ const customStyles = {
   },
 };
 
-type AddAdvertisementsProps = {
+type AdvertisementFormProps = {
   advertisement?: AdvertisementType | null;
   onClose: () => void;
 };
 
-export default function AddAdvertisements({
+export default function AdvertisementForm({
   advertisement,
   onClose,
-}: AddAdvertisementsProps): JSX.Element {
+}: AdvertisementFormProps): JSX.Element {
   const [modalIsOpen, setModalIsOpen] = useState(true);
   const [input, setInput] = useState<AdvertisementFormType>({
     name: '',
@@ -131,6 +133,11 @@ export default function AddAdvertisements({
           onChange={changeHandler}
           fullWidth
           required
+          slotProps={{
+            htmlInput: {
+              title: 'Укажите название объявления',
+            },
+          }}
         />
       </Box>
       <Box sx={{ mb: 2 }}>
@@ -176,7 +183,7 @@ export default function AddAdvertisements({
         <Button type="submit" variant="contained" color="success">
           {advertisement ? 'Сохранить изменения' : 'Добавить'}
         </Button>
-        <Button variant="contained" onClick={closeModal} sx={{ ml: 2 }}>
+        <Button variant="outlined" onClick={closeModal} sx={{ ml: 2 }}>
           Закрыть
         </Button>
       </Box>
