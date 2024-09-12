@@ -25,7 +25,7 @@ function formatPrice(price: number | undefined): string {
 export default function OrderModal({ order, open, onClose }: OrderModalProps): JSX.Element {
   const navigate = useNavigate();
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+    <Dialog open={open} onClose={onClose} maxWidth="md">
       <DialogTitle>
         Товары заказа №{order.id}
         <IconButton
@@ -33,7 +33,7 @@ export default function OrderModal({ order, open, onClose }: OrderModalProps): J
           color="inherit"
           onClick={onClose}
           aria-label="close"
-          sx={{ position: 'absolute', right: 8, top: 8 }}
+          sx={{ position: 'absolute', right: 13, top: 1 }}
         >
           <CloseIcon />
         </IconButton>
@@ -44,7 +44,15 @@ export default function OrderModal({ order, open, onClose }: OrderModalProps): J
             key={item.id}
             p={2}
             onClick={() => navigate(`/advertisements/${item.id}`)}
-            sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 2 }}
+            sx={{
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2,
+              border: '1px solid #ddd',
+              borderRadius: '8px',
+              mb: 2,
+            }}
           >
             <img
               src={item.imageUrl || '/logo.svg'}

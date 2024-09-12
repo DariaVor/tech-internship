@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import Grid2 from '@mui/material/Grid2';
+import Typography from '@mui/material/Typography';
 import { useGetAdvertisementsQuery } from '../../features/api/accountApi';
 import AdvertisementCard from '../ui/AdvertisementCard';
 import AdvertisementForm from '../ui/AdvertisementForm';
@@ -25,8 +26,8 @@ const SORT_OPTIONS = [
 ];
 
 export default function AdvertisementsPage(): JSX.Element {
-  const { data: advertisements = [], isLoading } = useGetAdvertisementsQuery();
-  const [filteredAds, setFilteredAds] = useState(advertisements);
+  const { data: advertisements, isLoading } = useGetAdvertisementsQuery();
+  const [filteredAds, setFilteredAds] = useState<AdvertisementType[]>([]);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState('');
@@ -37,38 +38,40 @@ export default function AdvertisementsPage(): JSX.Element {
   const navigate = useNavigate();
 
   useEffect(() => {
-    let ads = [...advertisements];
+    if (advertisements) {
+      let ads = [...advertisements];
 
-    if (searchTerm.length >= 3) {
-      ads = ads.filter((ad) => ad.name.toLowerCase().includes(searchTerm.toLowerCase()));
+      if (searchTerm.length >= 3) {
+        ads = ads.filter((ad) => ad.name.toLowerCase().includes(searchTerm.toLowerCase()));
+      }
+
+      switch (sortOption) {
+        case 'priceAsc':
+          ads.sort((a, b) => a.price - b.price);
+          break;
+        case 'priceDesc':
+          ads.sort((a, b) => b.price - a.price);
+          break;
+        case 'viewsAsc':
+          ads.sort((a, b) => a.views - b.views);
+          break;
+        case 'viewsDesc':
+          ads.sort((a, b) => b.views - a.views);
+          break;
+        case 'likesAsc':
+          ads.sort((a, b) => a.likes - b.likes);
+          break;
+        case 'likesDesc':
+          ads.sort((a, b) => b.likes - a.likes);
+          break;
+        default:
+          break;
+      }
+
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      setFilteredAds(ads.slice(startIndex, endIndex));
     }
-
-    switch (sortOption) {
-      case 'priceAsc':
-        ads.sort((a, b) => a.price - b.price);
-        break;
-      case 'priceDesc':
-        ads.sort((a, b) => b.price - a.price);
-        break;
-      case 'viewsAsc':
-        ads.sort((a, b) => a.views - b.views);
-        break;
-      case 'viewsDesc':
-        ads.sort((a, b) => b.views - a.views);
-        break;
-      case 'likesAsc':
-        ads.sort((a, b) => a.likes - b.likes);
-        break;
-      case 'likesDesc':
-        ads.sort((a, b) => b.likes - a.likes);
-        break;
-      default:
-        break;
-    }
-
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    setFilteredAds(ads.slice(startIndex, endIndex));
   }, [advertisements, searchTerm, sortOption, itemsPerPage, currentPage]);
 
   if (isLoading) {
@@ -76,7 +79,11 @@ export default function AdvertisementsPage(): JSX.Element {
   }
 
   if (!advertisements || advertisements.length === 0) {
-    return <div>Объявления не найдены</div>;
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <Typography variant="h6">Объявления не найдены</Typography>
+      </Box>
+    );
   }
 
   const totalPages = Math.ceil(advertisements.length / itemsPerPage);

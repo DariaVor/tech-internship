@@ -56,13 +56,6 @@ export const accountApi = createApi({
       }),
       invalidatesTags: ['Order'],
     }),
-    deleteOrder: builder.mutation<{ success: boolean }, { id: number }>({
-      query: (order) => ({
-        url: `/orders/${order.id}`,
-        method: 'DELETE',
-      }),
-      invalidatesTags: ['Order'],
-    }),
   }),
 });
 
@@ -75,5 +68,4 @@ export const {
   useGetOrdersQuery,
   useGetOrderByIdQuery,
   useUpdateOrderMutation,
-  useDeleteOrderMutation,
 } = accountApi;

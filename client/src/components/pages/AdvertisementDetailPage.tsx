@@ -77,7 +77,11 @@ export default function AdvertisementDetailPage(): JSX.Element {
   }
 
   if (!advertisement) {
-    return <Typography variant="h6">Объявление не найдено</Typography>;
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <Typography variant="h6">Объявление не найдено</Typography>
+      </Box>
+    );
   }
 
   const handleEditClick = (): void => {
