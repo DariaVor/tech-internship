@@ -35,14 +35,14 @@ export default function AdvertisementsPage(): JSX.Element {
   const [editAd, setEditAd] = useState<AdvertisementType | null>(null);
 
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     let ads = [...advertisements];
-  
+
     if (searchTerm.length >= 3) {
       ads = ads.filter((ad) => ad.name.toLowerCase().includes(searchTerm.toLowerCase()));
     }
-  
+
     switch (sortOption) {
       case 'priceAsc':
         ads.sort((a, b) => a.price - b.price);
@@ -65,7 +65,7 @@ export default function AdvertisementsPage(): JSX.Element {
       default:
         break;
     }
-  
+
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     setFilteredAds(ads.slice(startIndex, endIndex));
@@ -93,6 +93,10 @@ export default function AdvertisementsPage(): JSX.Element {
   const handleModalClose = (): void => {
     setIsModalOpen(false);
     setEditAd(null);
+  };
+
+  const handlePageChange = (_event: React.ChangeEvent<unknown>, page: number): void => {
+    setCurrentPage(page);
   };
 
   return (
@@ -128,8 +132,7 @@ export default function AdvertisementsPage(): JSX.Element {
       <PaginationControl
         currentPage={currentPage}
         totalPages={totalPages}
-        handlePreviousPage={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-        handleNextPage={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+        handlePageChange={handlePageChange}
       />
 
       {isModalOpen && <AdvertisementForm advertisement={editAd} onClose={handleModalClose} />}

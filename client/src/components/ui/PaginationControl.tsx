@@ -1,30 +1,26 @@
 import React from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Pagination from '@mui/material/Pagination';
 
 type PaginationControlProps = {
   currentPage: number;
   totalPages: number;
-  handlePreviousPage: () => void;
-  handleNextPage: () => void;
+  handlePageChange: (event: React.ChangeEvent<unknown>, page: number) => void;
 };
 
 export default function PaginationControl({
   currentPage,
   totalPages,
-  handlePreviousPage,
-  handleNextPage,
+  handlePageChange,
 }: PaginationControlProps): JSX.Element {
   return (
-    <Box display="flex" justifyContent="center" mt={4}>
-      <Button onClick={handlePreviousPage} disabled={currentPage === 1}>
-        Назад
-      </Button>
-      <Typography variant="body1" sx={{ mx: 2 }}>
-        {currentPage} / {totalPages}
-      </Typography>
-      <Button onClick={handleNextPage} disabled={currentPage === totalPages}>
-        Далее
-      </Button>
+    <Box display="flex" justifyContent="center" mt={4} mb={4}>
+      <Pagination
+        count={totalPages}
+        page={currentPage}
+        onChange={handlePageChange}
+        color="primary"
+      />
     </Box>
   );
 }

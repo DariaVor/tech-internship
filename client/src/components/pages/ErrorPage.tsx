@@ -1,5 +1,8 @@
 import React from 'react';
-import { Box, Typography, Button, useMediaQuery } from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { useNavigate } from 'react-router-dom';
 
 export default function ErrorPage(): JSX.Element {
